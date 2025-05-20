@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+    id 'io.qameta.allure' version '2.11.2'
+}
+
+group = 'com.koeality'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Selenium
+    implementation 'org.seleniumhq.selenium:selenium-java:4.9.0'
+
+    // Cucumber + JUnit
+    testImplementation 'io.cucumber:cucumber-java:7.13.0'
+    testImplementation 'io.cucumber:cucumber-junit:7.13.0'
+    testImplementation 'junit:junit:4.13.2'
+
+    // Allure Reporter
+    testImplementation 'io.qameta.allure:allure-cucumber7-jvm:2.24.0'
+}
+
+test {
+    useJUnit()
+    systemProperty "cucumber.options", "--plugin io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"
+}
+
+allure {
+    version = '2.24.0'
+    autoconfigure = true
+}

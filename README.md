@@ -1,1 +1,0 @@
-# koeality.njineeer-java-selenium-demo
