@@ -11,7 +11,6 @@ public class LoginSteps {
 
     @Given("I am on the Sauce Demo login page")
     public void i_am_on_the_sauce_demo_login_page() {
-        System.out.println("Step executed");
         System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
         driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com/v1/");
