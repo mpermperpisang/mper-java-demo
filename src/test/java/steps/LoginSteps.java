@@ -4,10 +4,24 @@ import io.cucumber.java.en.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import pages.LoginPage;
+import io.cucumber.java.Before;
+import io.cucumber.java.After;
+import utils.WebDriverManager;
 
 public class LoginSteps {
     private WebDriver driver;
     private LoginPage loginPage;
+
+    @Before
+    public void setUp() {
+        driver = WebDriverManager.getDriver();
+        loginPage = new LoginPage(driver);
+    }
+
+    @After
+    public void tearDown() {
+        WebDriverManager.quitDriver();
+    }
 
     @Given("I am on the Sauce Demo login page")
     public void i_am_on_the_sauce_demo_login_page() {
@@ -29,6 +43,7 @@ public class LoginSteps {
         if (!driver.getCurrentUrl().contains("inventory.html")) {
             throw new AssertionError("Login failed or products page not reached.");
         }
+
         driver.quit();
     }
 }
