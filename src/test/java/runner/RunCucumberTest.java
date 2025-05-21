@@ -1,8 +1,8 @@
-package tests;
+package runner;
 
-import org.junit.runner.RunWith;
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
+import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
@@ -11,9 +11,8 @@ import io.cucumber.junit.CucumberOptions;
     plugin = {
         "pretty",
         "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"
-    },
-    monochrome = true,
-    snippets = CucumberOptions.SnippetType.CAMELCASE
+    }
 )
 
-public class RunCucumberTest {}
+public class RunCucumberTest {
+}

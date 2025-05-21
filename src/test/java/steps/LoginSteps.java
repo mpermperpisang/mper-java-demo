@@ -1,49 +1,35 @@
 package steps;
 
 import io.cucumber.java.en.*;
+import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import pages.LoginPage;
-import io.cucumber.java.Before;
-import io.cucumber.java.After;
-import utils.WebDriverManager;
 
 public class LoginSteps {
-    private WebDriver driver;
+    private WebDriver driver = TestHooks.driver;
     private LoginPage loginPage;
 
-    @Before
-    public void setUp() {
-        driver = WebDriverManager.getDriver();
+    @Given("I am on the SauceDemo login page")
+    public void i_am_on_login_page() {
         loginPage = new LoginPage(driver);
-    }
-
-    @After
-    public void tearDown() {
-        WebDriverManager.quitDriver();
-    }
-
-    @Given("I am on the Sauce Demo login page")
-    public void i_am_on_the_sauce_demo_login_page() {
-        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
-        driver = new ChromeDriver();
-        driver.get("https://www.saucedemo.com/v1/");
-        loginPage = new LoginPage(driver);
+        loginPage.open();
     }
 
     @When("I login with username {string} and password {string}")
-    public void i_login_with_username_and_password(String username, String password) {
+    public void i_login_with_credentials(String username, String password) {
         loginPage.enterUsername(username);
         loginPage.enterPassword(password);
         loginPage.clickLogin();
     }
 
-    @Then("I should see the products page")
-    public void i_should_see_the_products_page() {
-        if (!driver.getCurrentUrl().contains("inventory.html")) {
-            throw new AssertionError("Login failed or products page not reached.");
-        }
+    @Then("I should see the inventory page")
+    public void i_should_see_inventory_page() {
+        Assert.assertTrue(driver.getCurrentUrl().contains("inventory.html"));
+    }
 
-        driver.quit();
+    @Then("I should see an error message")
+    public void i_should_see_error_message() {
+        String errorText = loginPage.getErrorMessage();
+        Assert.assertTrue(errorText.contains("Epic sadface"));
     }
 }

@@ -1,34 +1,53 @@
 plugins {
     id 'java'
-    id 'io.qameta.allure' version '2.11.2'
 }
 
-group = 'com.koeality'
-version = '1.0-SNAPSHOT'
+group 'com.example'
+version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
 
+ext {
+    cucumberVersion = '7.11.0'
+    seleniumVersion = '4.9.0'
+    junitVersion = '4.13.2'
+    allureVersion = '2.20.1'
+}
+
 dependencies {
-    // Selenium
-    implementation 'org.seleniumhq.selenium:selenium-java:4.9.0'
+    // Selenium WebDriver
+    implementation "org.seleniumhq.selenium:selenium-java:$seleniumVersion"
 
-    // Cucumber + JUnit
-    testImplementation 'io.cucumber:cucumber-java:7.13.0'
-    testImplementation 'io.cucumber:cucumber-junit:7.13.0'
-    testImplementation 'junit:junit:4.13.2'
+    // Cucumber
+    testImplementation "io.cucumber:cucumber-java:$cucumberVersion"
+    testImplementation "io.cucumber:cucumber-junit:$cucumberVersion"
 
-    // Allure Reporter
-    testImplementation 'io.qameta.allure:allure-cucumber7-jvm:2.24.0'
+    // JUnit
+    testImplementation "junit:junit:$junitVersion"
+
+    // Allure Cucumber7 integration
+    testImplementation "io.qameta.allure:allure-cucumber7-jvm:$allureVersion"
+
+    testImplementation 'io.github.bonigarcia:webdrivermanager:5.4.0'
 }
 
 test {
     useJUnit()
-    systemProperty "cucumber.options", "--plugin io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"
-}
 
-allure {
-    version = '2.24.0'
-    autoconfigure = true
+    // Clear old Allure results before running tests
+    doFirst {
+        delete "$buildDir/allure-results"
+    }
+
+    // Make sure test results are available for allure
+    systemProperty "allure.results.directory", "$buildDir/allure-results"
+
+    testLogging {
+        events "passed", "failed", "skipped"
+    }
+
+    // Optional: pass dynamic tags for cucumber
+    systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags", "")
 }

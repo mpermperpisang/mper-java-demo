@@ -1,120 +1,88 @@
 
-# 🚀 koeality.njineeer-java-demo
+# SauceDemo Automation Testing
 
-Automated web UI testing project using **Java**, **Selenium WebDriver**, **Cucumber**, and **Allure Report**.
+This project automates login scenarios on [SauceDemo](https://www.saucedemo.com/v1/) using:
+
+- Java
+- Cucumber (BDD)
+- Selenium WebDriver with ChromeDriver
+- Page Object Model (POM)
+- Gradle build system
+- Allure for test reporting
 
 ---
 
-## ✅ Prerequisites & Setup
+## Prerequisites
 
-### 1. Install JDK (Recommended: OpenJDK 17+)
+- Java 11 or higher installed
+- Chrome browser installed
+- ChromeDriver executable downloaded and available locally
 
-#### macOS
-```bash
-brew install openjdk
-sudo ln -sfn /opt/homebrew/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk
+---
 
-echo 'export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"' >> ~/.bash_profile
-source ~/.bash_profile
+## Setup
 
-java -version
-```
+1. Set the path to your ChromeDriver in the global test setup (e.g., in the `@Before` hook):
 
-#### Linux (Debian/Ubuntu)
-```bash
-sudo apt install openjdk-17-jdk -y
+   ```java
+   System.setProperty("webdriver.chrome.driver", "/path/to/chromedriver");
+   ```
 
-echo 'export JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"' >> ~/.bash_profile
-echo 'export PATH="$JAVA_HOME/bin:$PATH"' >> ~/.bash_profile
-source ~/.bash_profile
+2. Clone or download this project.
 
-java -version
-```
+3. Open terminal and navigate to the project root folder.
 
-#### Windows
-- Download and install Temurin JDK 17 (LTS) from [Adoptium](https://adoptium.net/).
-- Set `JAVA_HOME` environment variable and update `PATH`.
-- Verify installation:
+---
+
+## Running Tests
+
+- To run **all** tests:
+
   ```bash
-  java -version
+  ./gradlew test
   ```
 
-### 2. Install ChromeDriver
-- Ensure ChromeDriver version matches your Chrome browser.
-- Download from [ChromeDriver Downloads](https://sites.google.com/chromium.org/driver/).
-- Place `chromedriver` in your system `PATH` or specify its location in the test configuration.
+- To run tests filtered by tag (dynamic tagging), e.g. `@smoke`:
+
+  ```bash
+  ./gradlew test -Dcucumber.filter.tags="@smoke"
+  ```
 
 ---
 
-## 🛠️ Build Project
+## Test Reports with Allure
 
-```bash
-./gradlew clean build
-```
+1. After running tests, generate and open the report with:
 
----
+   ```bash
+   allure serve build/allure-results
+   ```
 
-## 🧪 Running Tests
-
-### Run All Tests
-```bash
-./gradlew test
-```
-
-### Run Tests with Specific Tags
-```bash
-./gradlew test -Dcucumber.options="--tags @smoke"
-```
+2. If you don’t have Allure installed, follow the instructions at [Allure docs](https://docs.qameta.io/allure/).
 
 ---
 
-## 📊 Generate and View Allure Reports
+## Locator Management
 
-### Install Allure CLI
+- Element locators are stored in `.properties` files under `src/test/resources/elements/`.
+- Each Page Object class loads its corresponding `.properties` file dynamically by name.
+- Example locator keys:
 
-#### macOS
-```bash
-brew install allure
-```
-
-#### Linux
-Follow instructions on [Allure Docs](https://docs.qameta.io/allure/#_installing_a_commandline)
-
-#### Windows
-Download and install from [Allure Releases](https://github.com/allure-framework/allure2/releases)
-
-### Generate Report
-```bash
-./gradlew clean test allureReport
-```
-
-### View Report
-```bash
-./gradlew allureServe
-```
-> This starts a local server and opens the report in your default browser.
+  ```
+  USERNAME_INPUT = #user-name
+  PASSWORD_INPUT = #password
+  LOGIN_BUTTON = #login-button
+  ERROR_MESSAGE = h3[data-test='error']
+  ```
 
 ---
 
-## 📌 Notes
+## Notes
 
-- Update ChromeDriver path after Chrome updates.
-- Adjust JVM options or memory settings if tests fail.
-- Feature files: `src/test/resources`
-- Page objects & utilities: `src/main/java`
-- Step definitions & runners: `src/test/java`
+- Old Allure results are deleted automatically before each test run for clean reporting.
+- Dynamic tags allow flexible test execution without modifying code.
+- Uses Page Object Model for better maintainability.
 
 ---
 
-## 📚 Tools & Libraries
-
-- Java 17+
-- Selenium WebDriver 4.x
-- Cucumber JVM 7.x
-- JUnit 4.13+
-- Allure Report 2.x
-- Gradle
-
----
-
-Let me know if you'd like a `Makefile` or custom Gradle tasks to streamline your workflow!
+Happy testing! 🚀
