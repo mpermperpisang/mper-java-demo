@@ -20,20 +20,6 @@ This project automates login scenarios on [SauceDemo](https://www.saucedemo.com/
 
 ---
 
-## Setup
-
-1. Set the path to your ChromeDriver in the global test setup (e.g., in the `@Before` hook):
-
-   ```java
-   System.setProperty("webdriver.chrome.driver", "/path/to/chromedriver");
-   ```
-
-2. Clone or download this project.
-
-3. Open terminal and navigate to the project root folder.
-
----
-
 ## Running Tests
 
 - To run **all** tests:
@@ -42,10 +28,10 @@ This project automates login scenarios on [SauceDemo](https://www.saucedemo.com/
   ./gradlew test
   ```
 
-- To run tests filtered by tag (dynamic tagging), e.g. `@smoke`:
+- To run tests filtered by tag, e.g. `@positive` or `@negative`:
 
   ```bash
-  ./gradlew test -Dcucumber.filter.tags="@smoke"
+  ./gradlew test -Dcucumber.filter.tags="@positive or @negative"
   ```
 
 ---
